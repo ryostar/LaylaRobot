@@ -48,7 +48,7 @@ from telegram.utils.helpers import mention_html
 from LaylaRobot.modules.sql.approve_sql import is_approved
 
 WARN_HANDLER_GROUP = 9
-CURRENT_WARNING_FILTER_STRING = "<b>Current warning filters in this chat:</b>\n"
+CURRENT_WARNING_FILTER_STRING = "<b>Bộ lọc cảnh báo hiện tại trong cuộc trò chuyện này:</b>\n"
 
 
 # Not async
@@ -63,7 +63,7 @@ def warn(user: User,
 
     if user.id in TIGERS:
         if warner:
-            message.reply_text("Tigers cant be warned.")
+            message.reply_text("Hổ không thể được cảnh báo.")
         else:
             message.reply_text(
                 "Tiger triggered an auto warn filter!\n I can't warn tigers but they should avoid abusing this."
@@ -82,7 +82,7 @@ def warn(user: User,
     if warner:
         warner_tag = mention_html(warner.id, warner.first_name)
     else:
-        warner_tag = "Automated warn filter."
+        warner_tag = "Bộ lọc cảnh báo tự động."
 
     limit, soft_warn = sql.get_warn_setting(chat.id)
     num_warns, reasons = sql.warn_user(user.id, chat.id, reason)
@@ -91,16 +91,16 @@ def warn(user: User,
         if soft_warn:  # punch
             chat.unban_member(user.id)
             reply = (
-                f"<code>❕</code><b>Punch Event</b>\n"
-                f"<code> </code><b>•  User:</b> {mention_html(user.id, user.first_name)}\n"
-                f"<code> </code><b>•  Count:</b> {limit}")
+                f"<code>❕</code><b>MỘT BÉ ĐÃ BỊ SÚT</b>\n"
+                f"<code> </code><b>•  Bé:</b> {mention_html(user.id, user.first_name)}\n"
+                f"<code> </code><b>•  Số lần vi phạm:</b> {limit}")
 
         else:  # ban
             chat.kick_member(user.id)
             reply = (
-                f"<code>❕</code><b>Ban Event</b>\n"
-                f"<code> </code><b>•  User:</b> {mention_html(user.id, user.first_name)}\n"
-                f"<code> </code><b>•  Count:</b> {limit}")
+                f"<code>❕</code><b>MỘT BÉ BỊ ĐUỔI</b>\n"
+                f"<code> </code><b>•  Bé:</b> {mention_html(user.id, user.first_name)}\n"
+                f"<code> </code><b>•  Số lần vi phạm:</b> {limit}")
 
         for warn_reason in reasons:
             reply += f"\n - {html.escape(warn_reason)}"
@@ -110,22 +110,22 @@ def warn(user: User,
         log_reason = (f"<b>{html.escape(chat.title)}:</b>\n"
                       f"#WARN_BAN\n"
                       f"<b>Admin:</b> {warner_tag}\n"
-                      f"<b>User:</b> {mention_html(user.id, user.first_name)}\n"
-                      f"<b>Reason:</b> {reason}\n"
-                      f"<b>Counts:</b> <code>{num_warns}/{limit}</code>")
+                      f"<b>Bé:</b> {mention_html(user.id, user.first_name)}\n"
+                      f"<b>Lý do:</b> {reason}\n"
+                      f"<b>Số lần vi phạm:</b> <code>{num_warns}/{limit}</code>")
 
     else:
         keyboard = InlineKeyboardMarkup([[
             InlineKeyboardButton(
-                "🔘 Remove warn", callback_data="rm_warn({})".format(user.id))
+                "🔘 Xóa cảnh cáo", callback_data="rm_warn({})".format(user.id))
         ]])
 
         reply = (
-            f"<code>❕</code><b>Warn Event</b>\n"
-            f"<code> </code><b>•  User:</b> {mention_html(user.id, user.first_name)}\n"
-            f"<code> </code><b>•  Count:</b> {num_warns}/{limit}")
+            f"<code>❕</code><b>CHỊ CẢNH CÁO NÈ:</b>\n"
+            f"<code> </code><b>•  Bé:</b> {mention_html(user.id, user.first_name)}\n"
+            f"<code> </code><b>•  Số lần vi phạm:</b> {num_warns}/{limit}")
         if reason:
-            reply += f"\n<code> </code><b>•  Reason:</b> {html.escape(reason)}"
+            reply += f"\n<code> </code><b>•  Lý do:</b> {html.escape(reason)}"
 
         log_reason = (f"<b>{html.escape(chat.title)}:</b>\n"
                       f"#WARN\n"
@@ -138,7 +138,7 @@ def warn(user: User,
         message.reply_text(
             reply, reply_markup=keyboard, parse_mode=ParseMode.HTML)
     except BadRequest as excp:
-        if excp.message == "Reply message not found":
+        if excp.message == "Không tìm thấy tin nhắn đã reply":
             # Do not reply
             message.reply_text(
                 reply,
@@ -166,7 +166,7 @@ def button(update: Update, context: CallbackContext) -> str:
         res = sql.remove_warn(user_id, chat.id)
         if res:
             update.effective_message.edit_text(
-                "Warn removed by {}.".format(mention_html(user.id, user.first_name)),
+                "Cảnh báo đã bị xóa bởi {}.".format(mention_html(user.id, user.first_name)),
                 parse_mode=ParseMode.HTML,
             )
             user_member = chat.get_member(user_id)
@@ -178,7 +178,7 @@ def button(update: Update, context: CallbackContext) -> str:
             )
         else:
             update.effective_message.edit_text(
-                "User already has no warns.", parse_mode=ParseMode.HTML
+                "Người dùng không có cảnh báo.", parse_mode=ParseMode.HTML
             )
 
     return ""
@@ -213,7 +213,7 @@ def warn_user(update: Update, context: CallbackContext) -> str:
         else:
             return warn(chat.get_member(user_id).user, chat, reason, message, warner)
     else:
-        message.reply_text("That looks like an invalid User ID to me.")
+        message.reply_text("Đối với tôi, điều đó có vẻ như là một ID người dùng không hợp lệ.")
     return ""
 
 
@@ -232,7 +232,7 @@ def reset_warns(update: Update, context: CallbackContext) -> str:
 
     if user_id:
         sql.reset_warns(user_id, chat.id)
-        message.reply_text("Warns have been reset!")
+        message.reply_text("Cảnh cáo đã được đặt lại!")
         warned = chat.get_member(user_id).user
         return (
             f"<b>{html.escape(chat.title)}:</b>\n"
@@ -241,7 +241,7 @@ def reset_warns(update: Update, context: CallbackContext) -> str:
             f"<b>User:</b> {mention_html(warned.id, warned.first_name)}"
         )
     else:
-        message.reply_text("No user has been designated!")
+        message.reply_text("Không có người dùng đã được chỉ định!")
     return ""
 
 
@@ -259,7 +259,7 @@ def warns(update: Update, context: CallbackContext):
 
         if reasons:
             text = (
-                f"This user has {num_warns}/{limit} warns, for the following reasons:"
+                f"Bé này có {num_warns}/{limit} cảnh cáo, vì những lý do sau:"
             )
             for reason in reasons:
                 text += f"\n • {reason}"
@@ -269,10 +269,10 @@ def warns(update: Update, context: CallbackContext):
                 update.effective_message.reply_text(msg)
         else:
             update.effective_message.reply_text(
-                f"User has {num_warns}/{limit} warns, but no reasons for any of them."
+                f"Bé có {num_warns}/{limit} lần bị cảnh cáo, nhưng không có lý do cho bất kỳ lý do nào trong số chúng."
             )
     else:
-        update.effective_message.reply_text("This user doesn't have any warns!")
+        update.effective_message.reply_text("Bé này ngoan, 10 điểm không vi phạm!")
 
 
 # Dispatcher handler stop - do not async
@@ -306,7 +306,7 @@ def add_warn_filter(update: Update, context: CallbackContext):
 
     sql.add_warn_filter(chat.id, keyword, content)
 
-    update.effective_message.reply_text(f"Warn handler added for '{keyword}'!")
+    update.effective_message.reply_text(f"Đã thêm trình xử lý cảnh báo cho '{keyword}'!")
     raise DispatcherHandlerStop
 
 
@@ -333,17 +333,17 @@ def remove_warn_filter(update: Update, context: CallbackContext):
     chat_filters = sql.get_chat_warn_triggers(chat.id)
 
     if not chat_filters:
-        msg.reply_text("No warning filters are active here!")
+        msg.reply_text("Không có bộ lọc cảnh báo nào đang hoạt động ở đây!")
         return
 
     for filt in chat_filters:
         if filt == to_remove:
             sql.remove_warn_filter(chat.id, to_remove)
-            msg.reply_text("Okay, I'll stop warning people for that.")
+            msg.reply_text("Được rồi, tôi sẽ ngừng cảnh báo mọi người về điều đó.")
             raise DispatcherHandlerStop
 
     msg.reply_text(
-        "That's not a current warning filter - run /warnlist for all active warning filters."
+        "Đó không phải là bộ lọc cảnh báo hiện tại - chạy /warnlist cho tất cả các bộ lọc cảnh báo đang hoạt động."
     )
 
 
@@ -353,7 +353,7 @@ def list_warn_filters(update: Update, context: CallbackContext):
     all_handlers = sql.get_chat_warn_triggers(chat.id)
 
     if not all_handlers:
-        update.effective_message.reply_text("No warning filters are active here!")
+        update.effective_message.reply_text("Không có bộ lọc cảnh báo nào đang hoạt động ở đây!")
         return
 
     filter_list = CURRENT_WARNING_FILTER_STRING
@@ -409,23 +409,23 @@ def set_warn_limit(update: Update, context: CallbackContext) -> str:
 
     if args:
         if args[0].isdigit():
-            if int(args[0]) < 3:
-                msg.reply_text("The minimum warn limit is 3!")
+            if int(args[0]) < 1:
+                msg.reply_text("Giới hạn cảnh báo tối thiểu là 2!")
             else:
                 sql.set_warn_limit(chat.id, int(args[0]))
-                msg.reply_text("Updated the warn limit to {}".format(args[0]))
+                msg.reply_text("Đã cập nhật giới hạn cảnh báo thành {}".format(args[0]))
                 return (
                     f"<b>{html.escape(chat.title)}:</b>\n"
                     f"#SET_WARN_LIMIT\n"
                     f"<b>Admin:</b> {mention_html(user.id, user.first_name)}\n"
-                    f"Set the warn limit to <code>{args[0]}</code>"
+                    f"Đặt giới hạn cảnh báo thành <code>{args[0]}</code>"
                 )
         else:
-            msg.reply_text("Give me a number as an arg!")
+            msg.reply_text("Cho tôi một con số như một lập luận!")
     else:
         limit, soft_warn = sql.get_warn_setting(chat.id)
 
-        msg.reply_text("The current warn limit is {}".format(limit))
+        msg.reply_text("Giới hạn cảnh báo hiện tại là {}".format(limit))
     return ""
 
 
@@ -441,7 +441,7 @@ def set_warn_strength(update: Update, context: CallbackContext):
     if args:
         if args[0].lower() in ("on", "yes"):
             sql.set_warn_strength(chat.id, False)
-            msg.reply_text("Too many warns will now result in a Ban!")
+            msg.reply_text("Quá nhiều cảnh báo bây giờ sẽ dẫn đến một Lệnh cấm!")
             return (
                 f"<b>{html.escape(chat.title)}:</b>\n"
                 f"<b>Admin:</b> {mention_html(user.id, user.first_name)}\n"
@@ -451,26 +451,26 @@ def set_warn_strength(update: Update, context: CallbackContext):
         elif args[0].lower() in ("off", "no"):
             sql.set_warn_strength(chat.id, True)
             msg.reply_text(
-                "Too many warns will now result in a normal punch! Users will be able to join again after."
+                "Quá nhiều cảnh báo bây giờ sẽ dẫn đến một cú sút bình thường! Người dùng sẽ có thể tham gia lại sau đó."
             )
             return (
                 f"<b>{html.escape(chat.title)}:</b>\n"
                 f"<b>Admin:</b> {mention_html(user.id, user.first_name)}\n"
-                f"Has disabled strong punches. I will use normal punch on users."
+                f"Đã vô hiệu hóa những lệnh cấm. Tôi sẽ sử dụng cú đấm bình thường vào người dùng."
             )
 
         else:
-            msg.reply_text("I only understand on/yes/no/off!")
+            msg.reply_text("Thêm on/yes/no/off! đi cha")
     else:
         limit, soft_warn = sql.get_warn_setting(chat.id)
         if soft_warn:
             msg.reply_text(
-                "Warns are currently set to *punch* users when they exceed the limits.",
+                "Cảnh báo hiện được đặt thành *sút* người dùng khi họ vượt quá giới hạn.",
                 parse_mode=ParseMode.MARKDOWN,
             )
         else:
             msg.reply_text(
-                "Warns are currently set to *Ban* users when they exceed the limits.",
+                "Cảnh báo hiện được đặt thành *cấm* người dùng khi họ vượt quá giới hạn.",
                 parse_mode=ParseMode.MARKDOWN,
             )
     return ""
@@ -478,8 +478,8 @@ def set_warn_strength(update: Update, context: CallbackContext):
 
 def __stats__():
     return (
-        f"• {sql.num_warns()} overall warns, across {sql.num_warn_chats()} chats.\n"
-        f"• {sql.num_warn_filters()} warn filters, across {sql.num_warn_filter_chats()} chats."
+        f"• {sql.num_warns()} cảnh báo tổng thể, qua {sql.num_warn_chats()} nhóm.\n"
+        f"• {sql.num_warn_filters()} bộ lọc cảnh báo, qua {sql.num_warn_filter_chats()} nhóm."
     )
 
 
@@ -497,17 +497,17 @@ def __chat_settings__(chat_id, user_id):
     num_warn_filters = sql.num_warn_chat_filters(chat_id)
     limit, soft_warn = sql.get_warn_setting(chat_id)
     return (
-        f"This chat has `{num_warn_filters}` warn filters. "
-        f"It takes `{limit}` warns before the user gets *{'kicked' if soft_warn else 'banned'}*."
+        f"Cuộc trò chuyện này có `{num_warn_filters}` cảnh báo bộ lọc. "
+        f"Nó cần `{limit}` cảnh báo trước khi người dùng nhận được *{'kicked' if soft_warn else 'banned'}*."
     )
 
 
 __help__ = """
- ❍ /warns <userhandle>*:* get a user's number, and reason, of warns.
- ❍ /warnlist*:* list of all current warning filters
+ ❍ /canhcao <userhandle>*:* lấy số ID của người dùng và lý do cảnh báo.
+ ❍ /warnlist*:* danh sách tất cả các bộ lọc cảnh báo hiện tại
 *Admins only:*
- ❍ /warn <userhandle>*:* warn a user. After 3 warns, the user will be banned from the group. Can also be used as a reply.
- ❍ /dwarn <userhandle>*:* warn a user and delete the message. After 3 warns, the user will be banned from the group. Can also be used as a reply.
+ ❍ /canhcao <userhandle>*:* cảnh báo người dùng. Sau 3 lần cảnh báo, người dùng sẽ bị cấm vào nhóm. Cũng có thể được sử dụng như một câu trả lời.
+ ❍ /dwarn <userhandle>*:* cảnh báo người dùng và xóa tin nhắn. Sau 3 lần cảnh báo, người dùng sẽ bị cấm vào nhóm. Cũng có thể được sử dụng như một câu trả lời.
  ❍ /resetwarn <userhandle>*:* reset the warns for a user. Can also be used as a reply.
  ❍ /addwarn <keyword> <reply message>*:* set a warning filter on a certain keyword. If you want your keyword to \
 be a sentence, encompass it with quotes, as such: `/addwarn "very angry" This is an angry user`.
@@ -516,9 +516,9 @@ be a sentence, encompass it with quotes, as such: `/addwarn "very angry" This is
  ❍ /strongwarn <on/yes/off/no>*:* If set to on, exceeding the warn limit will result in a ban. Else, will just punch.
 """
 
-__mod_name__ = "Warns"
+__mod_name__ = "Cảnh báo"
 
-WARN_HANDLER = CommandHandler(["warn", "dwarn"], warn_user, filters=Filters.group)
+WARN_HANDLER = CommandHandler(["canhcao", "dwarn"], warn_user, filters=Filters.group)
 RESET_WARN_HANDLER = CommandHandler(
     ["resetwarn", "resetwarns"], reset_warns, filters=Filters.group
 )
