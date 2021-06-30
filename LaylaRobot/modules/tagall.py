@@ -16,10 +16,10 @@ from LaylaRobot import pbot
 @pbot.on_message(filters.command("tagall") & ~filters.edited & ~filters.bot)
 @admins_only
 async def tagall(client, message):
-    await message.reply("`Processing.....`")
+    await message.reply("`Đang xử lý.....`")
     sh = get_text(message)
     if not sh:
-        sh = "Hi!"
+        sh = "Hú hú hú!"
     mentions = ""
     async for member in client.iter_chat_members(message.chat.id):
         mentions += member.user.mention + " "
@@ -30,7 +30,7 @@ async def tagall(client, message):
         await client.send_message(message.chat.id, j, parse_mode="html")
 
 
-__mod_name__ = "Tagall"
+__mod_name__ = "Tag tất cả"
 __help__ = """
-- /tagall : Tag everyone in a chat
+- /tagall : Gắn thẻ mọi người trong nhóm
 """
