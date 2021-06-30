@@ -73,7 +73,7 @@ def getsticker(update: Update, context: CallbackContext):
         os.remove("sticker.png")
     else:
         update.effective_message.reply_text(
-            "Please reply to a sticker for me to upload its PNG."
+            "Vui lòng trả lời nhãn dán để tôi tải lên PNG của nó."
         )
 
 
@@ -119,7 +119,7 @@ def kang(update: Update, context: CallbackContext):
         elif msg.reply_to_message.document:
             file_id = msg.reply_to_message.document.file_id
         else:
-            msg.reply_text("Yea, I can't kang that.")
+            msg.reply_text("Yea, tôi không thể kang điều đó.")
 
         kang_file = context.bot.get_file(file_id)
         if not is_animated:
@@ -359,7 +359,7 @@ def kang(update: Update, context: CallbackContext):
                 )
             print(e)
     else:
-        packs = "Please reply to a sticker, or image to kang it!\nOh, by the way. here are your packs:\n"
+        packs = "Vui lòng trả lời nhãn dán hoặc hình ảnh để kang nó!\nÀ, nhân tiện. đây là gói của bạn:\n"
         if packnum > 0:
             firstpackname = "a" + str(user.id) + "_by_" + context.bot.username
             for i in range(0, packnum + 1):
@@ -400,7 +400,7 @@ def makepack_internal(
             success = context.bot.create_new_sticker_set(
                 user.id,
                 packname,
-                f"{name}s kang pack" + extra_version,
+                f"{name} sticker lập từ @kenhsex" + extra_version,
                 png_sticker=png_sticker,
                 emojis=emoji,
             )
@@ -408,32 +408,32 @@ def makepack_internal(
             success = context.bot.create_new_sticker_set(
                 user.id,
                 packname,
-                f"{name}s animated kang pack" + extra_version,
+                f"{name}s @kenhsex" + extra_version,
                 tgs_sticker=tgs_sticker,
                 emojis=emoji,
             )
 
     except TelegramError as e:
         print(e)
-        if e.message == "Sticker set name is already occupied":
+        if e.message == "Tên bộ hình dán đã được sử dụng":
             msg.reply_text(
-                "Your pack can be found [here](t.me/addstickers/%s)" % packname,
+                "Gói của bạn có thể được tìm thấy [here](t.me/addstickers/%s)" % packname,
                 parse_mode=ParseMode.MARKDOWN,
             )
-        elif e.message in ("Peer_id_invalid", "bot was blocked by the user"):
+        elif e.message in ("Peer_id_invalid", "bot đã bị người dùng chặn"):
             msg.reply_text(
                 "Contact me in PM first.",
                 reply_markup=InlineKeyboardMarkup(
                     [
                         [
                             InlineKeyboardButton(
-                                text="Start", url=f"t.me/{context.bot.username}"
+                                text="Bắt đầu", url=f"t.me/{context.bot.username}"
                             )
                         ]
                     ]
                 ),
             )
-        elif e.message == "Internal Server Error: created sticker set not found (500)":
+        elif e.message == "Lỗi máy chủ nội bộ: không tìm thấy bộ hình dán đã tạo (500)":
             msg.reply_text(
                 "Sticker pack successfully created. Get it [here](t.me/addstickers/%s)"
                 % packname,
@@ -443,16 +443,16 @@ def makepack_internal(
 
     if success:
         msg.reply_text(
-            "Sticker pack successfully created. Get it [here](t.me/addstickers/%s)"
+            "Đã tạo thành công gói hình dán. Tìm thấy [tại đây](t.me/addstickers/%s)"
             % packname,
             parse_mode=ParseMode.MARKDOWN,
         )
     else:
-        msg.reply_text("Failed to create sticker pack. Possibly due to blek mejik.")
+        msg.reply_text("Không tạo được gói hình dán. Có thể do blek mejik.")
 
 
 __help__ = """
- ❍ /stickerid*:* reply to a sticker to me to tell you its file ID.
+ ❍ /stickerid*:* trả lời nhãn dán để tôi cho bạn biết ID tệp của nó.
  ❍ /getsticker*:* reply to a sticker to me to upload its raw PNG file.
  ❍ /kang*:* reply to a sticker to add it to your pack.
  ❍ /stickers*:* Find stickers for given term on combot sticker catalogue
