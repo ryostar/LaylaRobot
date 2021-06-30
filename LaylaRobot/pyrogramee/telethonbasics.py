@@ -17,13 +17,13 @@ async def convert_to_image(event, borg):
         or lmao.sticker
         or lmao.media
     ):
-        await borg.send_message(event.chat_id, "`Format Not Supported.`")
+        await borg.send_message(event.chat_id, "`Định dạng không được hỗ trợ.`")
         return
     else:
         try:
             time.time()
             downloaded_file_name = await borg.download_media(
-                lmao.media, sedpath, "`Downloading...`"
+                lmao.media, sedpath, "`Đang tải xuống...`"
             )
 
         except Exception as e:  # pylint:disable=C0103,W0703
@@ -31,11 +31,11 @@ async def convert_to_image(event, borg):
         else:
             lel = await borg.send_message(
                 event.chat_id,
-                "Downloaded to `{}` successfully.".format(downloaded_file_name),
+                "Đã tải xuống `{}` thành công.".format(downloaded_file_name),
             )
             await lel.delete
     if not os.path.exists(downloaded_file_name):
-        lel = await borg.send_message(event.chat_id, "Download Unsucessfull :(")
+        lel = await borg.send_message(event.chat_id, "Tải xuống không thành công :(")
         await lel.delete
         return
     if lmao and lmao.photo:
@@ -53,7 +53,7 @@ async def convert_to_image(event, borg):
         im = Image.open(pathofsticker2)
         im.save(image_new_path, "PNG")
         if not os.path.exists(image_new_path):
-            await event.reply("`Wasn't Able To Fetch Shot.`")
+            await event.reply("`Không thể tìm nạp ảnh.`")
             return
         lmao_final = image_new_path
     elif lmao.audio:
@@ -64,7 +64,7 @@ async def convert_to_image(event, borg):
         await runcmd(f"ffmpeg -i {hmmyes} -filter:v scale=500:500 -an {imgpath}")
         os.remove(sed_p)
         if not os.path.exists(imgpath):
-            await event.reply("`Wasn't Able To Fetch Shot.`")
+            await event.reply("`Không thể tìm nạp ảnh.`")
             return
         lmao_final = imgpath
     elif lmao.gif or lmao.video or lmao.video_note:
@@ -84,7 +84,7 @@ async def take_screen_shot(
 ) -> Optional[str]:
     """ take a screenshot """
     logger.info(
-        "[[[Extracting a frame from %s ||| Video duration => %s]]]",
+        "[[[Trích xuất một khung hình từ %s ||| Thời lượng video => %s]]]",
         video_file,
         duration,
     )
@@ -126,8 +126,8 @@ async def is_admin(event, user):
 
 
 async def progress(current, total, event, start, type_of_ps, file_name=None):
-    """Generic progress_callback for both
-    upload.py and download.py"""
+    """Progress_callback chung cho cả hai
+    upload.py và download.py"""
     now = time.time()
     diff = now - start
     if round(diff % 10.00) == 0 or current == total:
@@ -153,8 +153,8 @@ async def progress(current, total, event, start, type_of_ps, file_name=None):
 
 
 def humanbytes(size):
-    """Input size in bytes,
-    outputs in a human readable format"""
+    """Kích thước đầu vào tính bằng byte,
+    đầu ra ở định dạng con người có thể đọc được"""
     # https://stackoverflow.com/a/49361727/4723940
     if not size:
         return ""
@@ -169,17 +169,17 @@ def humanbytes(size):
 
 
 def time_formatter(milliseconds: int) -> str:
-    """Inputs time in milliseconds, to get beautified time,
-    as string"""
+    """Nhập thời gian tính bằng mili giây, để có được thời gian đẹp hơn,
+    với kiểu là chuỗi"""
     seconds, milliseconds = divmod(int(milliseconds), 1000)
     minutes, seconds = divmod(seconds, 60)
     hours, minutes = divmod(minutes, 60)
     days, hours = divmod(hours, 24)
     tmp = (
-        ((str(days) + " day(s), ") if days else "")
-        + ((str(hours) + " hour(s), ") if hours else "")
-        + ((str(minutes) + " minute(s), ") if minutes else "")
-        + ((str(seconds) + " second(s), ") if seconds else "")
-        + ((str(milliseconds) + " millisecond(s), ") if milliseconds else "")
+        ((str(days) + " ngày, ") if days else "")
+        + ((str(hours) + " giờ, ") if hours else "")
+        + ((str(minutes) + " phút, ") if minutes else "")
+        + ((str(seconds) + " giây, ") if seconds else "")
+        + ((str(milliseconds) + " milli giây, ") if milliseconds else "")
     )
     return tmp[:-2]
