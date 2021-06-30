@@ -109,16 +109,15 @@ buttons = [
 
 
 HELP_STRINGS = """
-`Hi.. I'M` Layla
-`ᴄʟɪᴄᴋ ᴏɴ ᴛʜᴇ ʙᴜᴛᴛᴏɴꜱ ʙᴇʟᴏᴡ ᴛᴏ ɢᴇᴛ ᴅᴏᴄᴜᴍᴇɴᴛᴀᴛɪᴏɴ ᴀʙᴏᴜᴛ ꜱᴘᴇᴄɪꜰɪᴄ ᴍᴏᴅᴜʟᴇꜱ..`
-Powered by :- [Awesome Bots](t.me/Laylalist)"""
+Bấm vào từng nút tiện ích bạn muốn để xem lệnh và thông tin về tiện ích đó.
+Powered by :- [Kuri](t.me/cunongdan)"""
 
 layla_IMG = "https://telegra.ph/file/524b78577a42b02b2f074.jpg"
 
-DONATE_STRING = """Heya, glad to hear you want to donate!
- You can support the project [Hero](t.me/HEROGAMERS1) \
- Supporting isnt always financial! [AwesomeSupport](t.me/LaylaList) \
- Those who cannot provide monetary support are welcome to help us develop the bot at ."""
+DONATE_STRING = """Heya, rất vui khi biết bạn muốn quyên góp!
+ Bạn có thể ủng hộ dự án [Kuri](t.me/cunongdan) \
+ Không phải lúc nào cũng hỗ trợ tài chính! \
+ Những người không thể donate vẫn được tôi trợ giúp tại [Kênh Bào Ngư](t.me/BaoNguRobot)."""
 
 IMPORTED = {}
 MIGRATEABLE = []
@@ -183,7 +182,7 @@ def send_help(chat_id, text, keyboard=None):
 def test(update: Update, context: CallbackContext):
     # pprint(eval(str(update)))
     # update.effective_message.reply_text("Hola tester! _I_ *have* `markdown`", parse_mode=ParseMode.MARKDOWN)
-    update.effective_message.reply_text("This person edited a message")
+    update.effective_message.reply_text("Người này đã sửa một tin nhắn")
     print(update.effective_message)
 
 
@@ -203,7 +202,7 @@ def start(update: Update, context: CallbackContext):
                     update.effective_chat.id,
                     HELPABLE[mod].__help__,
                     InlineKeyboardMarkup(
-                        [[InlineKeyboardButton(text="⬅️ BACK", callback_data="help_back")]]
+                        [[InlineKeyboardButton(text="⬅️ Quay lại", callback_data="help_back")]]
                     ),
                 )
 
@@ -228,7 +227,7 @@ def start(update: Update, context: CallbackContext):
             )
     else:
         update.effective_message.reply_text(
-            "I'm awake already!\n<b>Haven't slept since:</b> <code>{}</code>".format(
+            "Bào Ngư tới đây!\n<b>Bào Ngư đã chịch được:</b> <code>{}</code>".format(
                 uptime
             ),
             parse_mode=ParseMode.HTML,
@@ -249,7 +248,7 @@ def error_handler(update, context):
 
     # Build the message with some markup and additional information about what happened.
     message = (
-        "An exception was raised while handling an update\n"
+        "Một ngoại lệ đã được nêu ra trong khi xử lý một bản cập nhật\n"
         "<pre>update = {}</pre>\n\n"
         "<pre>{}</pre>"
     ).format(
@@ -307,7 +306,7 @@ def help_button(update, context):
         if mod_match:
             module = mod_match.group(1)
             text = (
-                "Here is the help for the *{}* module:\n".format(
+                "Đây là sự trợ giúp cho *{}* module:\n".format(
                     HELPABLE[module].__mod_name__
                 )
                 + HELPABLE[module].__help__
@@ -317,7 +316,7 @@ def help_button(update, context):
                 parse_mode=ParseMode.MARKDOWN,
                 disable_web_page_preview=True,
                 reply_markup=InlineKeyboardMarkup(
-                    [[InlineKeyboardButton(text="Back", callback_data="help_back")]]
+                    [[InlineKeyboardButton(text="Quay lại", callback_data="help_back")]]
                 ),
             )
 
@@ -363,25 +362,24 @@ def layla_about_callback(update, context):
     query = update.callback_query
     if query.data == "layla_":
         query.message.edit_text(
-            text=""" ℹ️ I'm *Layla*, a powerful group management bot built to help you manage your group easily.
-                 \n❍ I can restrict users.
-                 \n❍ I can greet users with customizable welcome messages and even set a group's rules.
-                 \n❍ I have an advanced anti-flood system.
-                 \n❍ I can warn users until they reach max warns, with each predefined actions such as ban, mute, kick, etc.
-                 \n❍ I have a note keeping system, blacklists, and even predetermined replies on certain keywords.
-                 \n❍ I check for admins' permissions before executing any command and more stuffs
-                 \n\n_Layla's licensed under the GNU General Public License v3.0_
-                 \n❍ Awesome Bots @LaylaList
-                 \n❍ Support Group @AwesomeSupport
-                 \n❍ Assistant @LaylaAssistant.
-                 \nHere is the [💾Repository](https://github.com/QueenArzoo/LaylaRobot).
-                 \n\nIf you have any question about Layla, let us know at .""",
+            text=""" ℹ️ Em là *Bào Ngư*, một bot quản lý nhóm mạnh mẽ được xây dựng để giúp bạn quản lý nhóm của mình một cách dễ dàng.
+                 \n❍ Tôi có thể hạn chế người dùng.
+                 \n❍ Tôi có thể chào mừng người dùng bằng các tin nhắn chào mừng có thể tùy chỉnh và thậm chí thiết lập các quy tắc của nhóm.
+                 \n❍ Tôi có một hệ thống chống ngập lụt tiên tiến.
+                 \n❍ Tôi có thể cảnh báo người dùng cho đến khi họ đạt đến cảnh báo tối đa, với mỗi hành động được xác định trước như cấm, tắt tiếng, đá, v.v.
+                 \n❍ Tôi có một hệ thống lưu giữ ghi chú, danh sách đen và thậm chí là các câu trả lời được xác định trước cho một số từ khóa nhất định.
+                 \n❍ Tôi kiểm tra quyền của quản trị viên trước khi thực hiện bất kỳ lệnh nào và các nội dung khác.
+                 \n❍ Tôi có thể phát nhạc trên kênh và nhóm thông qua voice chat.
+                 \n\n_Bào Ngư được cấp phép theo Giấy phép Công cộng GNU v3.0_
+                 \n❍ Kênh của tôi @BaoNguRoBot
+                 \n❍ Hỗ trợ phát nhạc @culaocong.
+                 \n\nNếu bạn có bất kỳ câu hỏi nào về Bào Ngư, hãy cho chúng tôi biết.""",
             parse_mode=ParseMode.MARKDOWN,
             disable_web_page_preview=True,
             reply_markup=InlineKeyboardMarkup(
                 [
                  [
-                    InlineKeyboardButton(text="Back", callback_data="layla_back")
+                    InlineKeyboardButton(text="Quay lại", callback_data="layla_back")
                  ]
                 ]
             ),
@@ -401,14 +399,14 @@ def Source_about_callback(update, context):
     query = update.callback_query
     if query.data == "source_":
         query.message.edit_text(
-            text=""" Hi..🤗 I'm *Layla*
-                 \nHere is the [Source Code](https://github.com/QueenArzoo/LaylaRobot) .""",
+            text=""" Hi..🤗 Em là *Bào Ngư*
+                 \nChồng của em là [Kuri](t.me/cunongdan) .""",
             parse_mode=ParseMode.MARKDOWN,
             disable_web_page_preview=True,
             reply_markup=InlineKeyboardMarkup(
                 [
                  [
-                    InlineKeyboardButton(text="Go Back", callback_data="source_back")
+                    InlineKeyboardButton(text="Quay lại", callback_data="source_back")
                  ]
                 ]
             ),
@@ -432,7 +430,7 @@ def get_help(update: Update, context: CallbackContext):
         if len(args) >= 2 and any(args[1].lower() == x for x in HELPABLE):
             module = args[1].lower()
             update.effective_message.reply_text(
-                f"Contact me in PM to get help of {module.capitalize()}",
+                f"Liên hệ với em trong PM để nhận trợ giúp về {module.capitalize()}",
                 reply_markup=InlineKeyboardMarkup(
                     [
                         [
@@ -448,7 +446,7 @@ def get_help(update: Update, context: CallbackContext):
             )
             return
         update.effective_message.reply_text(
-            "Contact me in PM to get the list of possible commands.",
+            "Liên hệ với em trong PM để nhận danh sách các lệnh có thể.",
             reply_markup=InlineKeyboardMarkup(
                 [
                     [
@@ -465,7 +463,7 @@ def get_help(update: Update, context: CallbackContext):
     elif len(args) >= 2 and any(args[1].lower() == x for x in HELPABLE):
         module = args[1].lower()
         text = (
-            "Here is the available help for the *{}* module:\n".format(
+            "Đây là trợ giúp có sẵn cho mô-đun *{}*:\n".format(
                 HELPABLE[module].__mod_name__
             )
             + HELPABLE[module].__help__
@@ -474,7 +472,7 @@ def get_help(update: Update, context: CallbackContext):
             chat.id,
             text,
             InlineKeyboardMarkup(
-                [[InlineKeyboardButton(text="Back", callback_data="help_back")]]
+                [[InlineKeyboardButton(text="Quay lại", callback_data="help_back")]]
             ),
         )
 
@@ -491,14 +489,14 @@ def send_settings(chat_id, user_id, user=False):
             )
             dispatcher.bot.send_message(
                 user_id,
-                "These are your current settings:" + "\n\n" + settings,
+                "Đây là những cài đặt hiện tại của bạn:" + "\n\n" + settings,
                 parse_mode=ParseMode.MARKDOWN,
             )
 
         else:
             dispatcher.bot.send_message(
                 user_id,
-                "Seems like there aren't any user specific settings available :'(",
+                "Có vẻ như không có bất kỳ cài đặt dành riêng cho người dùng nào:'(",
                 parse_mode=ParseMode.MARKDOWN,
             )
 
@@ -507,7 +505,7 @@ def send_settings(chat_id, user_id, user=False):
             chat_name = dispatcher.bot.getChat(chat_id).title
             dispatcher.bot.send_message(
                 user_id,
-                text="Which module would you like to check {}'s settings for?".format(
+                text="Mô-đun nào bạn muốn kiểm tra cài đặt của {}?".format(
                     chat_name
                 ),
                 reply_markup=InlineKeyboardMarkup(
@@ -517,8 +515,8 @@ def send_settings(chat_id, user_id, user=False):
         else:
             dispatcher.bot.send_message(
                 user_id,
-                "Seems like there aren't any chat settings available :'(\nSend this "
-                "in a group chat you're admin in to find its current settings!",
+                "Có vẻ như không có bất kỳ cài đặt trò chuyện nào khả dụng :'(\nGửi cái này"
+                "trong một cuộc trò chuyện nhóm mà bạn là quản trị viên tham gia để tìm cài đặt hiện tại của nó!",
                 parse_mode=ParseMode.MARKDOWN,
             )
 
@@ -537,7 +535,7 @@ def settings_button(update: Update, context: CallbackContext):
             chat_id = mod_match.group(1)
             module = mod_match.group(2)
             chat = bot.get_chat(chat_id)
-            text = "*{}* has the following settings for the *{}* module:\n\n".format(
+            text = "*{}* có các cài đặt sau cho mô-đun *{}*:\n\n".format(
                 escape_markdown(chat.title), CHAT_SETTINGS[module].__mod_name__
             ) + CHAT_SETTINGS[module].__chat_settings__(chat_id, user.id)
             query.message.reply_text(
@@ -547,7 +545,7 @@ def settings_button(update: Update, context: CallbackContext):
                     [
                         [
                             InlineKeyboardButton(
-                                text="Back",
+                                text="Quay lại",
                                 callback_data="stngs_back({})".format(chat_id),
                             )
                         ]
@@ -560,8 +558,8 @@ def settings_button(update: Update, context: CallbackContext):
             curr_page = int(prev_match.group(2))
             chat = bot.get_chat(chat_id)
             query.message.reply_text(
-                "Hi there! There are quite a few settings for {} - go ahead and pick what "
-                "you're interested in.".format(chat.title),
+                "Chào bạn! Có khá nhiều cài đặt cho {} - hãy tiếp tục và chọn những gì "
+                "bạn quan tâm đến.".format(chat.title),
                 reply_markup=InlineKeyboardMarkup(
                     paginate_modules(
                         curr_page - 1, CHAT_SETTINGS, "stngs", chat=chat_id
@@ -574,8 +572,8 @@ def settings_button(update: Update, context: CallbackContext):
             next_page = int(next_match.group(2))
             chat = bot.get_chat(chat_id)
             query.message.reply_text(
-                "Hi there! There are quite a few settings for {} - go ahead and pick what "
-                "you're interested in.".format(chat.title),
+                "Chào bạn! Có khá nhiều cài đặt cho {} - hãy tiếp tục và chọn những gì"
+                "bạn quan tâm đến.".format(chat.title),
                 reply_markup=InlineKeyboardMarkup(
                     paginate_modules(
                         next_page + 1, CHAT_SETTINGS, "stngs", chat=chat_id
@@ -587,8 +585,8 @@ def settings_button(update: Update, context: CallbackContext):
             chat_id = back_match.group(1)
             chat = bot.get_chat(chat_id)
             query.message.reply_text(
-                text="Hi there! There are quite a few settings for {} - go ahead and pick what "
-                "you're interested in.".format(escape_markdown(chat.title)),
+                text="Chào bạn! Có khá nhiều cài đặt cho {} - hãy tiếp tục và chọn những gì "
+                "bạn quan tâm đến.".format(escape_markdown(chat.title)),
                 parse_mode=ParseMode.MARKDOWN,
                 reply_markup=InlineKeyboardMarkup(
                     paginate_modules(0, CHAT_SETTINGS, "stngs", chat=chat_id)
@@ -616,7 +614,7 @@ def get_settings(update: Update, context: CallbackContext):
     # ONLY send settings in PM
     if chat.type != chat.PRIVATE:
         if is_user_admin(chat, user.id):
-            text = "Click here to get this chat's settings, as well as yours."
+            text = "Nhấp vào đây để nhận cài đặt của cuộc trò chuyện này, cũng như của bạn."
             msg.reply_text(
                 text,
                 reply_markup=InlineKeyboardMarkup(
@@ -633,7 +631,7 @@ def get_settings(update: Update, context: CallbackContext):
                 ),
             )
         else:
-            text = "Click here to check your settings."
+            text = "Bấm vào đây để kiểm tra cài đặt của bạn."
 
     else:
         send_settings(chat.id, user.id, True)
@@ -651,8 +649,8 @@ def donate(update: Update, context: CallbackContext):
 
         if OWNER_ID != 254318997 and DONATION_LINK:
             update.effective_message.reply_text(
-                "You can also donate to the person currently running me "
-                "[here]({})".format(DONATION_LINK),
+                "Bạn cũng có thể quyên góp cho người hiện đang điều hành tôi "
+                "[tại đây]({})".format(DONATION_LINK),
                 parse_mode=ParseMode.MARKDOWN,
             )
 
@@ -666,11 +664,11 @@ def donate(update: Update, context: CallbackContext):
             )
 
             update.effective_message.reply_text(
-                "I've PM'ed you about donating to my creator!"
+                "Tôi đã PM cho bạn về việc quyên góp cho người sáng tạo của tôi!"
             )
         except Unauthorized:
             update.effective_message.reply_text(
-                "Contact me in PM first to get donation information."
+                "Liên hệ với tôi trong PM trước để nhận thông tin đóng góp."
             )
 
 
@@ -697,10 +695,10 @@ def main():
 
     if SUPPORT_CHAT is not None and isinstance(SUPPORT_CHAT, str):
         try:
-            dispatcher.bot.sendMessage(f"@{SUPPORT_CHAT}", "Yes I'm alive 😹")
+            dispatcher.bot.sendMessage(f"@{SUPPORT_CHAT}", "Em là Bào Ngư 😹")
         except Unauthorized:
             LOGGER.warning(
-                "Bot isnt able to send message to support_chat, go and check!"
+                "Bot không thể gửi tin nhắn đến support_chat, hãy đi và kiểm tra!"
             )
         except BadRequest as e:
             LOGGER.warning(e.message)
