@@ -51,11 +51,11 @@ async def is_administrator(user_id: int, message):
 
 @telethn.on(events.NewMessage(pattern=f"^[!/]zombies ?(.*)"))
 async def zombies(event):
-    """ For .zombies command, list all the zombies in a chat. """
+    """ Đối với lệnh .zombies, liệt kê tất cả các thây ma trong một cuộc trò chuyện. """
 
     con = event.pattern_match.group(1).lower()
     del_u = 0
-    del_status = "No Deleted Accounts Found, Group Is Clean."
+    del_status = "Không tìm thấy tài khoản đã xóa, nhóm sạch."
 
     if con != "clean":
         find_zombies = await event.respond("Searching For Zombies...")
@@ -65,8 +65,8 @@ async def zombies(event):
                 del_u += 1
                 await sleep(1)
         if del_u > 0:
-            del_status = f"Found **{del_u}** Zombies In This Group.\
-            \nClean Them By Using - `/zombies clean`"
+            del_status = f"Tìm thấy **{del_u}** tài khoản bị banned trong nhóm.\
+            \nLàm sạch chúng bằng cách sử dụng - `/zombies clean`"
         await find_zombies.edit(del_status)
         return
 
@@ -77,14 +77,14 @@ async def zombies(event):
 
     # Well
     if not await is_administrator(user_id=event.from_id, message=event):
-        await event.respond("You're Not An Admin!")
+        await event.respond("Bạn không phải là quản trị viên!")
         return
 
     if not admin and not creator:
-        await event.respond("I Am Not An Admin Here!")
+        await event.respond("Tôi không phải là quản trị viên ở đây!")
         return
 
-    cleaning_zombies = await event.respond("Cleaning Zombies...")
+    cleaning_zombies = await event.respond("Làm sạch tài khoản bị banned...")
     del_u = 0
     del_a = 0
 
@@ -95,7 +95,7 @@ async def zombies(event):
                     EditBannedRequest(event.chat_id, user.id, BANNED_RIGHTS)
                 )
             except ChatAdminRequiredError:
-                await cleaning_zombies.edit("I Don't Have Ban Rights In This Group.")
+                await cleaning_zombies.edit("Tôi Không Có Quyền Cấm Trong Nhóm Này.")
                 return
             except UserAdminInvalidError:
                 del_u -= 1
@@ -104,11 +104,11 @@ async def zombies(event):
             del_u += 1
 
     if del_u > 0:
-        del_status = f"Cleaned `{del_u}` Zombies"
+        del_status = f"Đã xóa `{del_u}` tài khoản bị banned"
 
     if del_a > 0:
-        del_status = f"Cleaned `{del_u}` Zombies \
-        \n`{del_a}` Zombie Admin Accounts Are Not Removed!"
+        del_status = f"Đã xóa `{del_u}` tài khoản bị banned \
+        \n`{del_a}` Tài khoản quản trị viên bị banned không bị xóa!"
 
     await cleaning_zombies.edit(del_status)
     
@@ -129,11 +129,11 @@ async def _(event):
     if not event.chat.admin_rights.ban_users:
         return
     if not admin and not creator:
-        await event.reply("I am not admin here !")
+        await event.reply("Tôi không phải là quản trị viên ở đây !")
         return
     c = 0
     KICK_RIGHTS = ChatBannedRights(until_date=None, view_messages=True)
-    await event.reply("Searching Participant Lists...")
+    await event.reply("Tìm kiếm danh sách người tham gia...")
     async for i in event.client.iter_participants(event.chat_id):
 
         if isinstance(i.status, UserStatusLastMonth):
@@ -150,6 +150,6 @@ async def _(event):
             else:
                c = c + 1                    
 
-    required_string = "Successfully Kicked **{}** users"
+    required_string = "Đã chọn thành công **{}** người dùng"
     await event.reply(required_string.format(c))
 
