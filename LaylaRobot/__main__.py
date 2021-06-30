@@ -74,30 +74,36 @@ def get_readable_time(seconds: int) -> str:
 
 
 PM_START_TEXT = """
-Hello, I'M Layla
-`ɪ'ᴍ ʜᴇʀᴇ ᴛᴏ ʜᴇʟᴘ ʏᴏᴜ ᴍᴀɴᴀɢᴇ ʏᴏᴜʀ ɢʀᴏᴜᴘꜱ! ʜɪᴛ` /help
-Maintained by @HEROGAMERS1 ❤
+Chào, em là Bào Ngư
+Em có thể giúp anh quản lý nhóm và hát cho anh nghe. Nhấp /help hoặc /mp3 để xem tiện ích.
+Chồng của em là [Kuri](t.me/cunongdan) ❤
 """
 
 buttons = [
     [
         InlineKeyboardButton(
-            text="➕️ ᴀᴅᴅ ᴛᴏ ʏᴏᴜʀ ɢʀᴏᴜᴘ ➕️", url="t.me/LaylaRobot?startgroup=true"),
+            text="➕️ THÊM VÀO NHÓM CỦA BẠN ➕️", url="t.me/BaoNgu_Robot?startgroup=true"),
     ],
     [
-        InlineKeyboardButton(text="ᴀʙᴏᴜᴛ", callback_data="layla_"),
+        InlineKeyboardButton(text="GIỚI THIỆU", callback_data="layla_"),
         InlineKeyboardButton(
-            text="ꜱᴜᴘᴘᴏʀᴛ", url=f"https://t.me/{SUPPORT_CHAT}"
+            text="HỖ TRỢ", url=f"https://t.me/{SUPPORT_CHAT}"
         ),
     ],
     [
-        InlineKeyboardButton(text="ʟᴏɢꜱ", url=f"https://t.me/laylalogs"),
+        InlineKeyboardButton(text="NHÓM 🔞", url=f"https://t.me/laylalogs"),
         InlineKeyboardButton(
-            text="ꜰᴇᴅᴇʀᴀᴛɪᴏɴ", url=f"https://t.me/AntiRippingOrganization/410"
+            text="KÊNH 🔞", url=f"https://t.me/AntiRippingOrganization/410"
         ),
     ],
     [
-        InlineKeyboardButton(text="ʜᴇʟᴘ & ᴄᴏᴍᴍᴀɴᴅꜱ❔", callback_data="help_back"),
+        InlineKeyboardButton(text="TRỢ GIÚP & LỆNH ❔", callback_data="help_back"),
+    ],
+    [
+        InlineKeyboardButton(text="CÀI TIẾNG VIỆT 🇻🇳", url=f"tienviet.com"),
+        InlineKeyboardButton(
+            text="UNBLOCK IOS 🔞", url=f"https://m.com"
+        ), 
     ],
 ]
 
