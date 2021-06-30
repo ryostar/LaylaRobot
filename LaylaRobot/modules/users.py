@@ -45,10 +45,10 @@ def get_user_id(username):
                     return userdat.id
 
             except BadRequest as excp:
-                if excp.message == "Chat not found":
+                if excp.message == "Trò chuyện không tìm thấy":
                     pass
                 else:
-                    LOGGER.exception("Error extracting user ID")
+                    LOGGER.exception("Lỗi khi trích xuất ID người dùng")
 
     return None
 
@@ -61,9 +61,9 @@ def broadcast(update: Update, context: CallbackContext):
     if len(to_send) >= 2:
         to_group = False
         to_user = False
-        if to_send[0] == "/broadcastgroups":
+        if to_send[0] == "/sendnhom":
             to_group = True
-        if to_send[0] == "/broadcastusers":
+        if to_send[0] == "/sendnguoidung":
             to_user = True
         else:
             to_group = to_user = True
@@ -96,7 +96,7 @@ def broadcast(update: Update, context: CallbackContext):
                 except TelegramError:
                     failed_user += 1
         update.effective_message.reply_text(
-            f"Broadcast complete.\nGroups failed: {failed}.\nUsers failed: {failed_user}."
+            f"Hoàn tất phát sóng.\nNhóm không thành công: {failed}.\nNgười dùng không thành công: {failed_user}."
         )
 
 
@@ -123,7 +123,7 @@ def log_user(update: Update, context: CallbackContext):
 @sudo_plus
 def chats(update: Update, context: CallbackContext):
     all_chats = sql.get_all_chats() or []
-    chatfile = "List of chats.\n0. Chat name | Chat ID | Members count\n"
+    chatfile = "Danh sách các cuộc trò chuyện.\n0. Tên trò chuyện | ID trò chuyện | Số thành viên\n"
     P = 1
     for chat in all_chats:
         try:
@@ -142,7 +142,7 @@ def chats(update: Update, context: CallbackContext):
         update.effective_message.reply_document(
             document=output,
             filename="groups_list.txt",
-            caption="Here be the list of groups in my database.",
+            caption="Đây là danh sách các nhóm trong cơ sở dữ liệu của tôi.",
         )
 
 
@@ -158,15 +158,15 @@ def chat_checker(update: Update, context: CallbackContext):
 
 def __user_info__(user_id):
     if user_id in [777000, 1087968824]:
-        return """╘══「 Groups count: <code>???</code> 」"""
+        return """╘══「 Số lượng nhóm: <code>???</code> 」"""
     if user_id == dispatcher.bot.id:
-        return """╘══「 Groups count: <code>???</code> 」"""
+        return """╘══「 Số lượng nhóm <code>???</code> 」"""
     num_chats = sql.get_user_num_chats(user_id)
-    return f"""╘══「 Groups count: <code>{num_chats}</code> 」"""
+    return f"""╘══「 Số lượng nhóm <code>{num_chats}</code> 」"""
 
 
 def __stats__():
-    return f"• {sql.num_users()} users, across {sql.num_chats()} chats"
+    return f"• {sql.num_users()} người dùng, thông qua {sql.num_chats()} nhóm"
 
 
 def __migrate__(old_chat_id, new_chat_id):
@@ -176,7 +176,7 @@ def __migrate__(old_chat_id, new_chat_id):
 __help__ = ""  # no help string
 
 BROADCAST_HANDLER = CommandHandler(
-    ["broadcastall", "broadcastusers", "broadcastgroups"], broadcast
+    ["sendall", "sendnguoidung", "sendnhom"], broadcast
 )
 USER_HANDLER = MessageHandler(Filters.all & Filters.group, log_user)
 CHAT_CHECKER_HANDLER = MessageHandler(Filters.all & Filters.group, chat_checker)
@@ -187,5 +187,5 @@ dispatcher.add_handler(BROADCAST_HANDLER)
 dispatcher.add_handler(CHATLIST_HANDLER)
 dispatcher.add_handler(CHAT_CHECKER_HANDLER, CHAT_GROUP)
 
-__mod_name__ = "Users"
+__mod_name__ = "Người dùng"
 __handlers__ = [(USER_HANDLER, USERS_GROUP), BROADCAST_HANDLER, CHATLIST_HANDLER]
