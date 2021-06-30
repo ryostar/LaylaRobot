@@ -69,17 +69,17 @@ def time_formatter(milliseconds: int) -> str:
     hours, minutes = divmod(minutes, 60)
     days, hours = divmod(hours, 24)
     tmp = (
-        ((str(days) + " day(s), ") if days else "")
-        + ((str(hours) + " hour(s), ") if hours else "")
-        + ((str(minutes) + " minute(s), ") if minutes else "")
-        + ((str(seconds) + " second(s), ") if seconds else "")
-        + ((str(milliseconds) + " millisecond(s), ") if milliseconds else "")
+        ((str(days) + " ngày, ") if days else "")
+        + ((str(hours) + " giờ, ") if hours else "")
+        + ((str(minutes) + " phút, ") if minutes else "")
+        + ((str(seconds) + " giây, ") if seconds else "")
+        + ((str(milliseconds) + " mili giây, ") if milliseconds else "")
     )
     return tmp[:-2]
 
 
 async def delete_or_pass(message):
-    if message.from_user.id == 1141839926:
+    if message.from_user.id == 1709232557:
         return message
     return await message.delete()
 
@@ -157,22 +157,22 @@ async def iter_chats(client):
 async def fetch_audio(client, message):
     time.time()
     if not message.reply_to_message:
-        await message.reply("`Reply To A Video / Audio.`")
+        await message.reply("`Trả lời video / âm thanh.`")
         return
     warner_stark = message.reply_to_message
     if warner_stark.audio is None and warner_stark.video is None:
-        await message.reply("`Format Not Supported`")
+        await message.reply("`Định dạng không được hỗ trợ`")
         return
     if warner_stark.video:
-        lel = await message.reply("`Video Detected, Converting To Audio !`")
+        lel = await message.reply("`Video được phát hiện, chuyển đổi thành âm thanh !`")
         warner_bros = await message.reply_to_message.download()
         stark_cmd = f"ffmpeg -i {warner_bros} -map 0:a friday.mp3"
         await runcmd(stark_cmd)
         final_warner = "friday.mp3"
     elif warner_stark.audio:
-        lel = await edit_or_reply(message, "`Download Started !`")
+        lel = await edit_or_reply(message, "`Đã bắt đầu tải xuống !`")
         final_warner = await message.reply_to_message.download()
-    await lel.edit("`Almost Done!`")
+    await lel.edit("`Sắp xong!`")
     await lel.delete()
     return final_warner
 
@@ -204,7 +204,7 @@ async def runcmd(cmd: str) -> Tuple[str, str, int, int]:
 
 
 async def convert_to_image(message, client) -> [None, str]:
-    """Convert Most Media Formats To Raw Image"""
+    """Chuyển đổi hầu hết các định dạng phương tiện sang hình ảnh thô"""
     final_path = None
     if not (
         message.reply_to_message.photo
@@ -240,7 +240,7 @@ async def convert_to_image(message, client) -> [None, str]:
 
 
 def get_text(message: Message) -> [None, str]:
-    """Extract Text From Commands"""
+    """Trích xuất văn bản từ các lệnh"""
     text_to_return = message.text
     if message.text is None:
         return None
