@@ -83,13 +83,13 @@ def mute(update: Update, context: CallbackContext) -> str:
         bot.restrict_chat_member(chat.id, user_id, chat_permissions)
         bot.sendMessage(
             chat.id,
-            f"Muted <b>{html.escape(member.user.first_name)}</b> with no expiration date!",
-            parse_mode=ParseMode.HTML,
+            "<b>Khóa mõm {} vĩnh viễn!</b>\n<b>Lý do:</b> {}".format(
+               mention_html(member.user.id, member.user.first_name), reason
         )
         return log
 
     else:
-        message.reply_text("This user is already muted!")
+        message.reply_text("Thanh niên đó đã bị khóa mõm!")
 
     return ""
 
@@ -121,7 +121,7 @@ def unmute(update: Update, context: CallbackContext) -> str:
             and member.can_send_other_messages
             and member.can_add_web_page_previews
         ):
-            message.reply_text("This user already has the right to speak.")
+            message.reply_text("Em đã tha cho nó!.")
         else:
             chat_permissions = ChatPermissions(
                 can_send_messages=True,
@@ -139,7 +139,7 @@ def unmute(update: Update, context: CallbackContext) -> str:
                 pass
             bot.sendMessage(
                 chat.id,
-                f"I shall allow <b>{html.escape(member.user.first_name)}</b> to text!",
+                f"Chị tha cho <b>{html.escape(member.user.first_name)}</b> nhé!",
                 parse_mode=ParseMode.HTML,
             )
             return (
@@ -213,7 +213,7 @@ def temp_mute(update: Update, context: CallbackContext) -> str:
             )
             bot.sendMessage(
                 chat.id,
-                f"Muted <b>{html.escape(member.user.first_name)}</b> for {time_val}!",
+                f"Khóa mõm <b>{html.escape(member.user.first_name)}</b> trong {time_val}!\n<b>Lý do:</b> {reason}",
                 parse_mode=ParseMode.HTML,
             )
             return log
@@ -241,18 +241,18 @@ def temp_mute(update: Update, context: CallbackContext) -> str:
 
 # __help__ = """
 # *Admins only:*
-#  ❍ /mute <userhandle>*:* silences a user. Can also be used as a reply, muting the replied to user.
-#  ❍ /tmute <userhandle> x(m/h/d)*:* mutes a user for x time. (via handle, or reply). `m` = `minutes`, `h` = `hours`, `d` = `days`.
-#  ❍ /unmute <userhandle>*:* unmutes a user. Can also be used as a reply, muting the replied to user.
+#  ❍ /khoamom <userhandle>*:* silences a user. Can also be used as a reply, muting the replied to user.
+#  ❍ /tamkhoamom <userhandle> x(m/h/d)*:* mutes a user for x time. (via handle, or reply). `m` = `minutes`, `h` = `hours`, `d` = `days`.
+#  ❍ /nokhoamom <userhandle>*:* unmutes a user. Can also be used as a reply, muting the replied to user.
 # """
 
-MUTE_HANDLER = CommandHandler("mute", mute)
-UNMUTE_HANDLER = CommandHandler("unmute", unmute)
-TEMPMUTE_HANDLER = CommandHandler(["tmute", "tempmute"], temp_mute)
+MUTE_HANDLER = CommandHandler("khoamom", mute)
+UNMUTE_HANDLER = CommandHandler("nokhoamom", unmute)
+TEMPMUTE_HANDLER = CommandHandler(["tamkhoamom", "tmute"], temp_mute)
 
 dispatcher.add_handler(MUTE_HANDLER)
 dispatcher.add_handler(UNMUTE_HANDLER)
 dispatcher.add_handler(TEMPMUTE_HANDLER)
 
-__mod_name__ = "Muting"
+__mod_name__ = "Khóa mõm"
 __handlers__ = [MUTE_HANDLER, UNMUTE_HANDLER, TEMPMUTE_HANDLER]
